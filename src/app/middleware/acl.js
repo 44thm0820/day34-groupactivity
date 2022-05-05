@@ -2,5 +2,10 @@
 
 module.exports = (capability) => async (req, res, next) => {
   console.log(capability);
-  next();
-}
+  if (req.user.capabilities.includes(capability)){
+    next();
+  } else {
+    console.error('user does not have', capability);
+    next('user does not have capability'); 
+  }
+};

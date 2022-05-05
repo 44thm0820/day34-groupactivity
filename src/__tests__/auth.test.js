@@ -21,9 +21,11 @@ describe('Testing our auth middleware', () => {
 
   test('Access control should allow request to go through with a valid token', async () => {
 
+    
+
     let token = null; // create a valid token with your user model or jwt library, user must be in db.
 
-    const req = { token }
+    const req = { user: { capabilities: ['create'] } };
     const res = {
       status: jest.fn(() => res),
       send: jest.fn(() => res)
@@ -33,7 +35,9 @@ describe('Testing our auth middleware', () => {
     // console.log(aclMiddleware('create'));
     aclMiddleware('create')(req, res, next);
     expect(next).toHaveBeenCalled();
+    aclMiddleware('read')(req, res, next);
+    expect(next).toHaveBeenCalledWith(expect.anything());
   });
-})
+});
 
 
